@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohamed Agamy</title>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+    :root{
+      --primary:#00d4ff;
+      --secondary:#0b74ff;
+      --bg:#0a0f1a;
+      --card:#131b2a;
+      --text:#f9fafb;
+      --muted:#9ca3af;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Cairo',sans-serif;
+      margin:0;
+      color:var(--text);
+      background:var(--bg);
+      overflow-x:hidden;
+      min-height:100vh;
+    }
+
+    /* خلفية متحركة */
+    canvas.bg{
+      position:fixed;
+      top:0;left:0;
+      width:100%;
+      height:100%;
+      z-index:-1;
+      background:var(--bg);
+    }
+ 
+    *{box-sizing:border-box}
+    html,body{height:100%}
+
+
+    /* top nav */
+    .container{max-width:1200px;margin:0 auto}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .avatar{width:52px;height:52px;border-radius:12px;background:linear-gradient(180deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 8px 24px rgba(16,30,45,0.6), inset 0 1px 0 rgba(255,255,255,0.08)}
+    .brand .name{font-weight:700}
+    nav.desktop{display:flex;gap:8px}
+    nav.desktop a{padding:8px 14px;border-radius:12px;background:transparent;border:1px solid var(--glass-border);color:var(--muted);text-decoration:none;font-weight:600}
+    nav.desktop a.active{background:linear-gradient(180deg, rgba(41,125,242,0.14), rgba(27,90,189,0.06));box-shadow:0 8px 30px rgba(18,44,80,0.6);border:1px solid rgba(41,125,242,0.25);color:var(--accent-2)}
+
+    /* mobile nav */
+    .hamburger{display:none;width:44px;height:44px;border-radius:10px;border:1px solid var(--glass-border);background:var(--card);align-items:center;justify-content:center;cursor:pointer}
+    .mobile-menu{display:none;position:fixed;left:12px;right:12px;top:76px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:12px;border:1px solid var(--glass-border);box-shadow:0 18px 50px rgba(2,8,15,0.7)}
+    .mobile-menu a{display:block;padding:12px;border-radius:10px;margin:6px 0;color:var(--muted);text-decoration:none}
+
+    /* hero */
+    .hero{
+      display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center;margin-top:18px
+    }
+    .hero-card{
+      padding:36px;border-radius:18px;background:linear-gradient(180deg, rgba(255, 255, 255, 0.062), rgba(255, 255, 255, 0.048));box-shadow: 0 20px 60px rgba(3,10,18,0.6), inset 0 1px 0 rgba(255,255,255,0.02);border:1px solid var(--glass-border);
+    }
+    .eyebrow{color: rgba(41,125,242,0.6);font-weight:700;letter-spacing:1px;font-size:13px;margin-bottom:10px}
+    h1{font-size:48px;margin:6px 0 8px;line-height:1;letter-spacing:-0.5px}
+    .role{font-size:18px;color:var(--accent-2);font-weight:700;margin-bottom:16px}
+    .desc{color:rgba(233,240,251,0.85);max-width:680px;line-height:1.6;font-size:15px;margin-bottom:20px}
+    .cta-row{display:flex;gap:12px;align-items:center}
+    .btn-primary{background: linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:white;padding:12px 20px;border-radius:10px;font-weight:700;cursor:pointer;box-shadow: 0 12px 30px rgba(41,125,242,0.18)}
+    .icon-btn{width:44px;height:44px;border-radius:10px;border:1px solid var(--glass-border);display:inline-flex;align-items:center;justify-content:center;background:var(--card);cursor:pointer}
+
+    /* right photo */
+    .photo-wrap{display:flex;align-items:center;justify-content:center;position:relative;padding:24px;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.008), rgba(255,255,255,0.01));border:1px solid var(--glass-border);box-shadow: 0 30px 80px rgba(2,8,15,0.7);min-height:420px}
+    .photo-frame{width:320px;height:360px;border-radius:14px;overflow:hidden;position:relative;background:#1b3143;box-shadow: 0 18px 40px rgba(2,8,15,0.6);border:6px solid rgba(255,255,255,0.02)}
+    .photo-frame img{width:100%;height:100%;object-fit:cover;display:block}
+
+    /* sections style */
+    section{margin-top:36px}
+    .section-head{display:flex;justify-content:space-between;align-items:center}
+    .section-head h2{margin:0;font-size:20px}
+    .card{padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));border:1px solid var(--glass-border);box-shadow:0 12px 30px rgba(2,8,15,0.6)}
+
+    /* skills */
+    .skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+    .skill{display:flex;flex-direction:column;gap:8px}
+    .skill .label{display:flex;justify-content:space-between;font-weight:600}
+    .bar{height:10px;border-radius:8px;background:rgba(255, 255, 255, 0.103);overflow:hidden}
+    .bar > i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,rgb(0, 195, 255) ,rgb(2, 142, 223),  rgb(0, 59, 223)  );width:40%}
+
+    /* experience */
+    .exp-list{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .exp-item{display:flex;gap:12px}
+    .exp-item .meta{min-width:120px;color:rgb(233, 240, 251)}
+    .exp-item .body{flex:1}
+
+    /* projects */
+    .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+    .project{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0));border:1px solid var(--glass-border)}
+    .project img{width:100%;height:80%;object-fit:cover;border-radius:8px;margin-bottom:10px}
+
+    /* certificates */
+    .cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+    .cert{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:var(--card);display:flex;align-items:center;gap:12px}
+
+    /* contact */
+    .contact-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .contact-form input,.contact-form textarea{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted);resize:none}
+
+    /* footer */
+    footer{margin:40px 0 20px;text-align:center;color:rgba(255,255,255,0.6)}
+
+    /* responsive tweaks */
+    @media(max-width:980px){
+      .hero{grid-template-columns:1fr;gap:18px}
+      .photo-wrap{min-height:300px}
+      .projects-grid{grid-template-columns:repeat(2,1fr)}
+      .cert-grid{grid-template-columns:repeat(2,1fr)}
+      .skills-grid{grid-template-columns:1fr}
+      .contact-form{grid-template-columns:1fr}
+      nav.desktop{display:none}
+      .hamburger{display:flex}
+      .mobile-menu{display:none}
+    }
+    @media(max-width:560px){
+      h1{font-size:28px}
+      .photo-frame{width:260px;height:300px}
+      .projects-grid{grid-template-columns:1fr}
+      .cert-grid{grid-template-columns:1fr}
+    }
+    /* scroll animation */
+.reveal{
+  opacity:0;
+  transform:translateY(60px);
+  transition: all 0.9s ease;
+}
+
+.reveal.active{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* صورة تظهر بزوم خفيف */
+.reveal-img{
+  opacity:0;
+  transform:scale(0.85);
+  transition: all 1s ease;
+}
+
+.reveal-img.active{
+  opacity:1;
+  transform:scale(1);
+}
+
+/* حركة كروت الشهادات */
+.project.card{
+  transition: all .35s ease;
+}
+
+.project.card:hover{
+  transform:translateY(-18px);
+  box-shadow:0 25px 60px rgba(0,0,0,.5);
+}
+
+/* يخلي السكروول ناعم */
+
+html{
+  scroll-behavior:smooth;
+}
+#loader{
+  position:fixed;
+  inset:0;
+  background:#0a0f1a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:99999;
+}
+
+.spinner{
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  border:5px solid transparent;
+  border-top:5px solid var(--primary);
+  border-right:5px solid var(--secondary);
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
+.cursor-glow{
+  position:fixed;
+  width:260px;
+  height:260px;
+  border-radius:50%;
+  pointer-events:none;
+  background:radial-gradient(circle,
+  rgba(0,212,255,.18),
+  transparent 65%);
+  transform:translate(-50%,-50%);
+  z-index:0;
+}
+
+.card{
+  transition: transform .4s ease;
+  transform-style:preserve-3d;
+}
+
+.card:hover{
+  transform:rotateX(6deg) rotateY(6deg) scale(1.03);
+}
+
+
+</style>
+</head>
+
+<body>
+      <canvas class="bg"></canvas>
+  <div class="cursor-glow"></div>
+
+  <div id="loader">
+    <div class="spinner"></div>
+</div>
+
+
+
+<div class="container">
+    <header>
+      <div class="brand">
+        <div class="avatar">( :</div>
+        <div>
+          <div class="name">MOHAMED AGAMY</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6)">Web & Mobile Application Developer</div>
+        </div>
+      </div>
+
+      <nav class="desktop">
+        <a href="#home" class="active">Home</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#certificates">Certificates</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="hamburger" aria-label="قائمة" style="color: white;">☰</button>
+      </div>
+
+      <div class="mobile-menu" id="mobileMenu" style="background-color: #e9f0fb77;">
+        <a href="#home" style="color: black;">Home</a>
+        <a href="#skills" style="color: black;">Skills</a>
+        <a href="#experience" style="color: black;">Experience</a>
+        <a href="#certificates" style="color: black;">Certificates</a>
+        <a href="#contact" style="color: black;">Contact</a>
+      </div>
+    </header>
+
+    <!-- HERO / HOME -->
+    <section id="home" class="hero">
+
+    <div class="photo-wrap">
+        <div class="photo-frame">
+          <img src="mm.jpg" alt="Profile">
+        </div>
+      </div>
+
+      <div class="hero-card" >
+        <div class="eyebrow" >WELCOME TO MY PORTFOLIO</div>
+        <h1 style="color: #68bbff;">Professor          </h1>
+        <h1>MOHAMED AGAMY</h1>
+        <div class="role">Front-End Developer & Mobile Apps Programer</div>
+        <p class="desc">proficient in mobile application development using Flutter, Kotlin, and Java, delivering high-quality and efficient solutions across both web and mobile platforms."</p>
+        <div class="cta-row">
+          
+       <a href="https://www.facebook.com/share/1DZ4aZ9QTt/"> <button class="icon-btn" title="LinkedIn"><img src="fa.png" width="45px" style="border-radius: 6px;"></button></a>  
+ <a href="https://wa.link/zo0la9"><button class="icon-btn" title="Facebook" style="background-color: #ffffe4 ; width: 45px; height: 45px;"><img src="in (3).jpg" width="45px" height="45px" style="border-radius: 6px;"></button></a>
+ <a href="https://www.instagram.com/mohamed_agamy_1?igsh=OHE0OTdnaGFteHo4"  ><button class="icon-btn" title="Instagram" ><img src="in.jpg" width="45px" style="border-radius: 6px; "></button></a>
+        <h3>Follow Us On</h3>
+</div>
+      </div>
+  
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="section-head">
+        <h2>Skills</h2>
+        <div style="color:rgba(255,255,255,0.6)">My technical stack & proficiency</div>
+      </div>
+      <div style="margin-top:12px" class="card">
+        <div class="skills-grid">
+          <div class="skill">
+            <div class="label"><span>HTML</span><span>96%</span></div>
+            <div class="bar"><i style="width:90%"></i></div>
+          </div>
+          <div class="skill">
+            <div class="label"><span>CSS</span><span>84%</span></div>
+            <div class="bar"><i style="width:80%"></i></div>
+          </div>
+          <div class="skill">
+            <div class="label"><span>JavaScript</span><span>70%</span></div>
+            <div class="bar"><i style="width:70%"></i></div>
+          </div>
+          <div class="skill">
+            <div class="label"><span>Kotlin-Flutur</span><span>66%</span></div>
+            <div class="bar"><i style="width:60%"></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" style="background-color: hsla(218, 100%, 86%, 0) ; border-radius: 24px;"  >
+      <div class="section-head"><h2>Experience</h2><div style="color:rgba(255,255,255,0.6)">Work history</div></div>
+      <div style="margin-top:12px" class="card">
+        <div class="exp-list">
+          <div class="exp-item">
+            <div class="meta">2023 - Present</div>
+            <div class="body">
+              <div style="font-weight:700">Jonior Front-End Developer — Oxoford Tech</div>
+              <div style="color:rgba(255,255,255,0.7);margin-top:6px">Responsible for Web Disigning And Programing, optimizing (OS) queries, and leading a small Web Developing team.</div>
+            <center>
+    <img src="mh.jpeg" width="200px" style="border-radius: 20px;">
+  </center>
+            </div><br>
+          </div>
+          <div class="exp-item">
+            <div class="meta">2024 - 2026</div>
+            <div class="body">
+              <div style="font-weight:700">Web Developer — Digitopia Competation</div>
+              <div style="color:rgba(255,255,255,0.7);margin-top:6px">Built Web sites and Mobile Applications ; improved scalability.</div>
+              <center>
+    <img src="ll.png" width="250px" style="border-radius: 20px;">
+ </center>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+  <br>
+</div>
+    <section id="certificates">
+      <div class="section-head"><h2>Certificates</h2><div style="color:rgba(255,255,255,0.6)">Selected Works</div></div>
+      <div style="margin-top:12px" class="projects-grid">
+        <div class="project card">
+          <img src="gg.jpg" alt="proj" height="400px">
+          <div style="font-weight:700"> Google</div>
+          <div style="color:rgba(255,255,255,0.7);margin-top:6px">In Cybersecurity .
+          </div>
+        </div>
+        <div class="project card">
+          <img src="kkkk (2).jpg" alt="proj">
+          <div style="font-weight:700">Oxford</div>
+          <div style="color:rgba(255,255,255,0.7);margin-top:6px">In Web Application Devaloping .</div>
+        </div>
+        <div class="project card">
+          <img src="dgi.jpg" alt="proj">
+          <div style="font-weight:700">Digitopia</div>
+          <div style="color:rgba(255,255,255,0.7);margin-top:6px">  In Egypt Competation.</div>
+        </div>
+      </div>
+    </section>
+    <br>
+
+    <section>
+  <div class="section-head"><h2>Os Platforms</h2><div style="color:rgba(255,255,255,0.6)">Works On</div></div>
+       <div class="project card">
+          <img src="Capture.PNG" alt="proj">
+          <div style="font-weight:700">Windows</div>
+          <div style="color:rgba(255,255,255,0.7);margin-top:6px">Works As A Programer.</div>
+        </div>
+
+         <div class="project card">
+          <img src="Capture2.PNG" alt="proj">
+          <div style="font-weight:700">Kali Linix</div>
+          <div style="color:rgba(255,255,255,0.7);margin-top:6px">Works As A Ethical Hacker.</div>
+        </div>
+    </section>
+
+
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-head"><h2>Contact</h2><div style="color:rgba(255,255,255,0.6)">Say hello</div></div>
+      <div style="margin-top:12px" class="card">
+        <form id="contactForm" class="contact-form">
+          <input type="text" name="name" placeholder="Your name" required />
+          <input type="email" name="email" placeholder="Your email" required />
+          <textarea name="message" rows="5" placeholder="Your message" required></textarea>
+          <div style="grid-column:1 / -1;display:flex;justify-content:flex-start">
+            <button type="submit" class="btn-primary">Send Message</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    
+
+    <footer>© 2026 Mohamed Agamy — All rights reserved</footer>
+  </div>
+
+  <div style="position:fixed;left:18px;bottom:18px;width:48px;height:48px;border-radius:50%;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;border:1px solid var(--glass-border);box-shadow:0 10px 30px rgba(2,8,15,0.6)">💬</div>
+
+
+<script>
+
+     // خلفية متحركة
+    const canvas = document.querySelector('canvas.bg');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resize(){
+      canvas.width = innerWidth;
+      canvas.height = innerHeight;
+    }
+    window.addEventListener('resize',resize);
+    resize();
+
+    for(let i=0;i<60;i++){
+      particles.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        vx:(Math.random()-0.5)*0.6,
+        vy:(Math.random()-0.5)*0.6,
+        r:2+Math.random()*3,
+        color:`hsl(${Math.random()*360},100%,60%)`
+      });
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(let i=0;i<particles.length;i++){
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        if(p.x<0||p.x>canvas.width) p.vx*=-1;
+        if(p.y<0||p.y>canvas.height) p.vy*=-1;
+        ctx.beginPath();
+        ctx.fillStyle=p.color;
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fill();
+
+        for(let j=i+1;j<particles.length;j++){
+          const p2=particles[j];
+          const dx=p.x-p2.x,dy=p.y-p2.y,dist=Math.sqrt(dx*dx+dy*dy);
+          if(dist<120){
+            ctx.strokeStyle=`rgba(0,212,255,${1-dist/120})`;
+            ctx.beginPath();
+            ctx.moveTo(p.x,p.y);
+            ctx.lineTo(p2.x,p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+
+    <script>
+    // mobile menu toggle
+    const hamb = document.querySelector('.hamburger');
+    const menu = document.getElementById('mobileMenu');
+    hamb.addEventListener('click', ()=>{
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    })
+
+    // set active nav on scroll
+    const navLinks = document.querySelectorAll('nav.desktop a, .mobile-menu a');
+    const sections = Array.from(document.querySelectorAll('section'));
+    function onScroll(){
+      const pos = window.scrollY + 120;
+      sections.forEach(s=>{
+        if(pos >= s.offsetTop && pos < s.offsetTop + s.offsetHeight){
+          navLinks.forEach(a=>a.classList.remove('active'));
+          document.querySelectorAll('a[href="#'+s.id+'"]').forEach(x=>x.classList.add('active'));
+        }
+      })
+    }
+    window.addEventListener('scroll', onScroll);
+
+    // contact form handler (demo)
+    document.getElementById('contactForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      alert('Message sent (demo). شكراً!');
+      this.reset();
+    })
+
+    // scroll reveal animation
+const revealElements = document.querySelectorAll(
+  '.hero-card, .photo-wrap, .skill, .exp-item, .project, .cert, .card'
+);
+
+const revealImages = document.querySelectorAll('img');
+
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('active');
+    }
+  });
+},{
+  threshold:0.15
+});
+
+// add classes automatically
+revealElements.forEach(el=>{
+  el.classList.add('reveal');
+  observer.observe(el);
+});
+
+revealImages.forEach(img=>{
+  img.classList.add('reveal-img');
+  observer.observe(img);
+});
+window.addEventListener("load",()=>{
+  document.getElementById("loader").style.opacity="0";
+
+  setTimeout(()=>{
+    document.getElementById("loader").style.display="none";
+  },500);
+});
+const glow = document.querySelector(".cursor-glow");
+
+window.addEventListener("mousemove",(e)=>{
+  glow.style.left = e.clientX + "px";
+  glow.style.top = e.clientY + "px";
+});
+
+const skills = document.querySelectorAll(".bar i");
+
+const skillsObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.style.width =
+      entry.target.getAttribute("style").replace("width:","");
+    }
+  });
+},{threshold:.4});
+
+skills.forEach(skill=>{
+  skillsObserver.observe(skill);
+});
+window.addEventListener("scroll",()=>{
+  const y = window.scrollY;
+  document.querySelector("canvas.bg")
+  .style.transform = `translateY(${y * -0.25}px)`;
+});
+
+  </script>
+</body>
+</html>
